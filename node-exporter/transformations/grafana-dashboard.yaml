@@ -1,0 +1,33 @@
+- type: Add
+  scope: global
+  trigger:
+    metadata:
+      name: grafana
+  path:
+    - spec
+    - template
+    - spec
+    - volumes
+  value:
+    - name: nodeexporter-grafana-dashboard
+      configMap:
+        name: nodeexporter-grafana-dashboard
+- type: Add
+  scope: global
+  trigger:
+    metadata:
+      name: grafana
+  path:
+    - spec
+    - template
+    - spec
+    - containers
+    - ".*"
+    - volumeMounts
+  value:
+    - name: nodeexporter-grafana-dashboard
+      mountPath: /etc/dashboards/cluster.json
+      subPath: cluster.json
+    - name: nodeexporter-grafana-dashboard
+      mountPath: /etc/dashboards/hosts.json
+      subPath: hosts.json

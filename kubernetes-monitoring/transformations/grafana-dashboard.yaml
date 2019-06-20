@@ -1,0 +1,48 @@
+- type: Add
+  scope: global
+  trigger:
+    metadata:
+      name: grafana
+  path:
+    - spec
+    - template
+    - spec
+    - volumes
+  value:
+    - name: kubedashboard
+      configMap:
+        name: kubedashboard
+- type: Add
+  scope: global
+  trigger:
+    metadata:
+      name: grafana
+  path:
+    - spec
+    - template
+    - spec
+    - containers
+    - ".*"
+    - volumeMounts
+  value:
+    - name: kubedashboard
+      mountPath: /etc/kubedashboard
+- type: Add
+  scope: global
+  yamlize: true
+  trigger:
+    metadata:
+      name: grafana-dashboards
+  path:
+    - data
+    - dashboards.yaml
+    - providers
+  value:
+    name: kubedashboard
+    orgId: 1
+    folder: "kubedashboard"
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 3
+    options:
+      path: /etc/kubedashboard

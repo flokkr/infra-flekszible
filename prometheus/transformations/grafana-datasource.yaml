@@ -1,0 +1,30 @@
+- type: Add
+  scope: global
+  trigger:
+    metadata:
+      name: grafana
+  path:
+    - spec
+    - template
+    - spec
+    - volumes
+  value:
+    - name: prometheus-datasource-provisioning
+      configMap:
+        name: prometheus-grafana-datasource
+- type: Add
+  scope: global
+  trigger:
+    metadata:
+      name: grafana
+  path:
+    - spec
+    - template
+    - spec
+    - containers
+    - ".*"
+    - volumeMounts
+  value:
+    - name: prometheus-datasource-provisioning
+      mountPath: /etc/grafana/provisioning/datasources/prometheus.yaml
+      subPath: prometheus.yaml

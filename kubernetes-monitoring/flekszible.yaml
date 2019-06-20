@@ -1,0 +1,8 @@
+description: prometheus instance to be configured for k8s cluster monitoring.
+source:
+   - path: ..
+import:
+#   - path: prometheus
+   - path: node-exporter
+   - path: kube-state-metrics
+#   - path: grafana

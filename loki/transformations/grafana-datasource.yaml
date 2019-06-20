@@ -1,0 +1,30 @@
+- type: Add
+  scope: global
+  trigger:
+    metadata:
+      name: grafana
+  path:
+    - spec
+    - template
+    - spec
+    - volumes
+  value:
+    - name: loki-datasource-provisioning
+      configMap:
+        name: loki-grafana-datasource
+- type: Add
+  scope: global
+  trigger:
+    metadata:
+      name: grafana
+  path:
+    - spec
+    - template
+    - spec
+    - containers
+    - ".*"
+    - volumeMounts
+  value:
+    - name: loki-datasource-provisioning
+      mountPath: /etc/grafana/provisioning/datasources/loki.yaml
+      subPath: loki.yaml

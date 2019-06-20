@@ -1,0 +1,54 @@
+name: grafana/install-dashboard
+parameters:
+  - name: configmap
+    required: true
+    type: string
+---
+- type: Add
+  scope: global
+  trigger:
+    metadata:
+      name: grafana
+  path:
+    - spec
+    - template
+    - spec
+    - volumes
+  value:
+    - name: {{.configmap}}
+      configMap:
+        name: {{.configmap}}
+- type: Add
+  scope: global
+  trigger:
+    metadata:
+      name: grafana
+  path:
+    - spec
+    - template
+    - spec
+    - containers
+    - ".*"
+    - volumeMounts
+  value:
+    - name: {{.configmap}}
+      mountPath: /etc/{{.configmap}}
+- type: Add
+  scope: global
+  yamlize: true
+  trigger:
+    metadata:
+      name: grafana-dashboards
+  path:
+    - data
+    - dashboards.yaml
+    - providers
+  value:
+    name: {{.configmap}}
+    orgId: 1
+    folder: "{{.configmap}}"
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 3
+    options:
+      path: /etc/{{.configmap}}

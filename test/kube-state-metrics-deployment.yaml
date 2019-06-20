@@ -1,0 +1,63 @@
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: kube-state-metrics
+  labels:
+    app: kube-state-metrics
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kube-state-metrics
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: /metrics
+      labels:
+        app: kube-state-metrics
+    spec:
+      serviceAccount: kube-state-metrics
+      containers:
+      - args:
+        - --collectors=configmaps
+        - --collectors=cronjobs
+        - --collectors=daemonsets
+        - --collectors=deployments
+        - --collectors=endpoints
+        - --collectors=horizontalpodautoscalers
+        - --collectors=jobs
+        - --collectors=limitranges
+        - --collectors=namespaces
+        - --collectors=nodes
+        - --collectors=persistentvolumeclaims
+        - --collectors=persistentvolumes
+        - --collectors=poddisruptionbudgets
+        - --collectors=pods
+        - --collectors=replicasets
+        - --collectors=replicationcontrollers
+        - --collectors=resourcequotas
+        - --collectors=secrets
+        - --collectors=services
+        - --collectors=statefulsets
+        image: k8s.gcr.io/kube-state-metrics:v1.5.0
+        imagePullPolicy: IfNotPresent
+        name: kube-state-metrics
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+      terminationGracePeriodSeconds: 30
