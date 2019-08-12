@@ -1,0 +1,19 @@
+name: prometheus/local
+#parameters:
+#   - name: namespace
+#     required: false
+#     type: string
+---
+- type: Add
+  yamlize: true
+  path:
+    - data
+    - prometheus.yaml
+    - scrape_configs
+    - 0
+    - kubernetes_sd_configs
+    - 0
+  value:
+    namespaces:
+       names:
+          - {{ .namespace }}
