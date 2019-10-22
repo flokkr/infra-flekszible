@@ -4,6 +4,9 @@ metadata:
   name: jaeger
 spec:
   clusterIP: None
+  ports:
+      - name: web
+        port: 16686
   selector:
     app: jaeger
     component: jaeger
