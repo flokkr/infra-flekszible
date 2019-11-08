@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: node-exporter
@@ -81,7 +81,6 @@ spec:
           path: /sys
           type: ""
         name: sys
-  templateGeneration: 1
   updateStrategy:
     rollingUpdate:
       maxUnavailable: 1

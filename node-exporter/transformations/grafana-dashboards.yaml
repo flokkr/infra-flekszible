@@ -1,0 +1,2 @@
+- type: grafana/install-dashboard
+  configmap: nodeexporter-grafana
