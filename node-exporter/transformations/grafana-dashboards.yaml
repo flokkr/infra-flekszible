@@ -1,2 +1,4 @@
 - type: grafana/install-dashboard
-  configmap: nodeexporter-grafana
+  configmap: nodeexporter-grafana-dashboard
+  optional: true
+  scope: global
