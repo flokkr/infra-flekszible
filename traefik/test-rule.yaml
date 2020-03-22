@@ -1,0 +1,24 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroutebar
+spec:
+  entryPoints:
+    - http
+  routes:
+  - match: PathPrefix(`/omi`)
+    kind: Rule
+    services:
+    - name: perftest-omi
+      port: 9874
+    middlewares:
+      - name: striprefix-omi
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: striprefix-omi
+spec:
+  stripPrefix:
+    prefixes:
+      - /omi
