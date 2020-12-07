@@ -10,5 +10,6 @@ spec:
     app: prometheus
     component: server
   ports:
-  - protocol: TCP
+  - name: web
+    protocol: TCP
     port: 9090
